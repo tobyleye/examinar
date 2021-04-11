@@ -1,37 +1,55 @@
-import { useEffect, useState } from "react";
-import { Box, Text, ChakraProvider, Heading, Spinner } from "@chakra-ui/react";
+import * as React from "react";
+import { Box, ChakraProvider, Heading, Text } from "@chakra-ui/react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-const isProd = process.env.NODE_ENV === "production";
+import ComingSoon from "./coming-soon";
+
+function generateRandomColor() {
+  const rgb = Array(3)
+    .fill()
+    .map(() => Math.floor(Math.random() * 255));
+  return `rgb(${rgb})`;
+}
+
+function Lost() {
+  const [bg, setBg] = React.useState();
+  return (
+    <Box
+      height="100vh"
+      width="100%"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      style={{
+        background: bg,
+      }}
+      onClick={() => setBg(generateRandomColor())}
+    >
+      <Box textAlign="center" userSelect="none">
+        <Heading size="xl" mb={2}>
+          It would appear you are lost!
+        </Heading>
+        <Text>
+          Click on anywhere on the page to change the background color
+        </Text>
+      </Box>
+    </Box>
+  );
+}
 
 function App() {
-  const [message, setMessage] = useState(null);
-  useEffect(() => {
-    const effect = async () => {
-      console.log({ env: process.env.NODE_ENV });
-      const data = await fetch(
-        isProd ? "https://examin-er.herokuapp.com/" : "http://localhost:4000"
-      ).then((res) => res.json());
-      setMessage(data.message);
-    };
-    effect();
-  }, []);
-
   return (
     <ChakraProvider>
-      <Box h="100vh" display="grid" placeItems="center">
-        {message ? (
-          <Box textAlign="center">
-            <Heading size="lg" textTransform="capitalize">
-              {message}
-            </Heading>
-            <Text size="sm" mt={1} color="gray.600" fontStyle="italic">
-              Coming soon
-            </Text>
-          </Box>
-        ) : (
-          <Spinner />
-        )}
-      </Box>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <ComingSoon />
+          </Route>
+          <Route path="*">
+            <Lost />
+          </Route>
+        </Switch>
+      </Router>
     </ChakraProvider>
   );
 }
