@@ -3,7 +3,7 @@ import { Box, Text, Heading, Spinner } from "@chakra-ui/react";
 
 const isProd = process.env.NODE_ENV === "production";
 
-export default function ComingSoon(params) {
+export default function ComingSoon() {
   const [message, setMessage] = React.useState(null);
   React.useEffect(() => {
     const effect = async () => {
