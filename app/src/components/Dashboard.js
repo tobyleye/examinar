@@ -42,6 +42,11 @@ export default function Dashboard() {
     dispatch({ type: "addNewQuestion" });
   }
 
+  function submitHandler() {
+    console.log(`questions created ✅`);
+    console.log(questions);
+  }
+
   return (
     <Box pl={200}>
       <Sidebar width={200} />
@@ -73,6 +78,10 @@ export default function Dashboard() {
           >
             Add question <AddIcon ml={2} h={4} />
           </Button>
+
+          <Box textAlign="center" mt={5}>
+            <Button onClick={submitHandler}>Submit</Button>
+          </Box>
         </Box>
       </Box>
     </Box>
