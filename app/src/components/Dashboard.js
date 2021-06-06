@@ -12,7 +12,7 @@ function reducer(state, { type, ...action }) {
         ...state,
         questions: state.questions.concat({
           text: "",
-          options: [],
+          options: ["", ""], // initialize question with two empty options
           correctAnswer: "",
         }),
       };
@@ -22,6 +22,15 @@ function reducer(state, { type, ...action }) {
         ...state,
         questions: state.questions.map((q, idx) =>
           idx === index ? { ...q, [field]: value } : q
+        ),
+      };
+
+    case "deleteQuestion":
+      console.log("delete question", action);
+      return {
+        ...state,
+        questions: state.questions.filter(
+          (_, qIndex) => qIndex !== action.index
         ),
       };
     default:

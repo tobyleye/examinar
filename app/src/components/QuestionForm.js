@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon } from "@chakra-ui/icons";
 
-function Option({ option, isAnswer, onChange, onDelete, selectAnswer }) {
+function Option({ option, index, isAnswer, onChange, onDelete, selectAnswer }) {
   return (
     <Box>
       <Box
@@ -30,6 +30,7 @@ function Option({ option, isAnswer, onChange, onDelete, selectAnswer }) {
             _focus={{
               border: "none",
             }}
+            placeholder={`Option ` + (index + 1)}
             onChange={(e) => onChange(e.target.value)}
           />
         </Box>
@@ -88,11 +89,14 @@ export default React.memo(function QuestionForm({ index, question, dispatch }) {
           mb={4}
         >
           <Heading size="md">Question {index + 1}</Heading>
-          <CloseButton />
+          <CloseButton
+            onClick={() => dispatch({ type: "deleteQuestion", index })}
+          />
         </Box>
         <Textarea
           bg="white"
           value={question.text}
+          placeholder="Enter question here..."
           onChange={(e) => setQuestion("text", e.target.value)}
         />
 
@@ -100,6 +104,7 @@ export default React.memo(function QuestionForm({ index, question, dispatch }) {
           <VStack alignItems="stretch" spacing={2}>
             {options.map((opt, index) => (
               <Option
+                index={index}
                 option={opt}
                 key={index}
                 isAnswer={!!correctAnswer && correctAnswer === opt}
